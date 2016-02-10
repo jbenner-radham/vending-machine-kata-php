@@ -56,7 +56,7 @@ display either "INSERT COIN" or the current amount as appropriate.
 - [x] Display "INSERT COIN" and a zero balance if checked after purchase.
 - [x] If there is not enough money inserted then the machine displays "PRICE" and the price of the item.
 - [x] Display "INSERT COIN" if no money was inserted.
-- [ ] Display the current amount if any money was inserted.
+- [x] Display the current balance if any money was inserted.
 
 ### Make Change
 
