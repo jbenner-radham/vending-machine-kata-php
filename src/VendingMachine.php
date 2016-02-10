@@ -7,6 +7,9 @@ use InvalidArgumentException;
 class VendingMachine
 {
     /** @var float */
+    const COLA = 1.00;
+
+    /** @var float */
     const DIME = .10;
 
     /** @var float */
@@ -18,8 +21,20 @@ class VendingMachine
     /** @var float */
     const QUARTER = .25;
 
+    /** @var int */
+    const STATE_NO_OP = 0;
+
+    /** @var int */
+    const STATE_DISPENSE = 1;
+
+    /** @var int */
+    const STATE_INSUFFICIENT_BALANCE = 2;
+
     /** @var float[]  */
     protected $_coinage = [];
+
+    /** @var int */
+    protected $_state = self::STATE_NO_OP;
 
     protected function _getBalance(): float
     {
@@ -70,5 +85,30 @@ class VendingMachine
         }
 
         return $message;
+    }
+
+    public function selectProduct(float $product): array
+    {
+        $cost      = $product;
+        $inventory = [self::COLA];
+
+        if (!in_array($product, $inventory)) {
+            throw new InvalidArgumentException('Product is not in inventory.');
+        }
+
+        if ($cost > $this->_getBalance()) {
+            if ($this->_state === self::STATE_INSUFFICIENT_BALANCE) {
+                return $this->checkDisplay('INSERT COIN');
+            }
+
+            $this->_state = self::STATE_INSUFFICIENT_BALANCE;
+
+            return $this->checkDisplay($this->getMessage('PRICE ', $cost));
+        }
+
+        $this->_coinage = [];
+        $this->_state   = self::STATE_DISPENSE;
+
+        return $this->checkDisplay('THANK YOU');
     }
 }

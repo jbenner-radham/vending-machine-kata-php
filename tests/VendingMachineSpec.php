@@ -32,4 +32,13 @@ class VendingMachineSpec extends ObjectBehavior
     {
         $this->acceptCoin(VendingMachine::PENNY)->shouldReturn(['message' => 'INSERT COIN', 'balance' => '$0.00', 'rejected' => '$0.01']);
     }
+
+    function it_should_sell_cola_for_one_dollar()
+    {
+        $this->acceptCoin(VendingMachine::QUARTER);
+        $this->acceptCoin(VendingMachine::QUARTER);
+        $this->acceptCoin(VendingMachine::QUARTER);
+        $this->acceptCoin(VendingMachine::QUARTER);
+        $this->selectProduct(VendingMachine::COLA)->shouldReturn(['message' => 'THANK YOU', 'balance' => '$0.00']);
+    }
 }
