@@ -1,0 +1,7 @@
+formatter.name: pretty
+
+suites:
+  kata_suite:
+    namespace: Kata
+    psr4_prefix: Kata
+    spec_prefix: tests

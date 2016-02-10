@@ -1,0 +1,30 @@
+{
+    "name": "jbenner/vending-machine-kata-php",
+    "description": "The kata of machines, their vending and stuff.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Benner",
+            "email": "james.benner@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^2.4",
+        "symfony/var-dumper": "^3.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "scripts": {
+        "test": "bin/phpspec run"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kata\\": "src/"
+        }
+    }
+}
