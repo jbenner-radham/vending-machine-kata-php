@@ -71,4 +71,9 @@ class VendingMachineSpec extends ObjectBehavior
         $this->acceptCoin(VendingMachine::NICKEL);
         $this->selectProduct(VendingMachine::CANDY)->shouldReturn(['message' => 'PRICE $0.65', 'balance' => '$0.05']);
     }
+
+    function it_should_display_insert_coin_if_no_money_was_inserted()
+    {
+        $this->checkDisplay()->shouldReturn(['message' => 'INSERT COIN', 'balance' => '$0.00']);
+    }
 }
