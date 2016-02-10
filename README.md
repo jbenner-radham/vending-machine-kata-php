@@ -53,7 +53,7 @@ display either "INSERT COIN" or the current amount as appropriate.
 - [x] Sell cola for $1.00.
 - [x] Sell chips for $0.50.
 - [x] Sell candy for $0.65.
-- [x] Display "INSERT COIN" and a zero the balance if checked after purchase.
+- [x] Display "INSERT COIN" and a zero balance if checked after purchase.
 - [ ] If there is not enough money inserted then the machine displays "PRICE" and the price of the item.
 - [ ] Subsequent checks of the display will read either "INSERT COIN" or the current amount as appropriate.
 
