@@ -32,7 +32,7 @@ You will need to do something similar. This can be simulated using strings,
 constants, enums, symbols, or something of that nature.
 
 - [x] Accept nickels.
-- [ ] Accept dimes.
+- [x] Accept dimes.
 - [ ] Accept quarters.
 - [ ] Reject pennies.
 

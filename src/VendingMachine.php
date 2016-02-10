@@ -7,6 +7,9 @@ use InvalidArgumentException;
 class VendingMachine
 {
     /** @var float */
+    const DIME = .10;
+
+    /** @var float */
     const NICKEL = .05;
 
     /** @var float[]  */
@@ -24,6 +27,7 @@ class VendingMachine
     public function acceptCoin(float $coin)
     {
         switch ($coin) {
+            case self::DIME:
             case self::NICKEL:
                 $this->_coinage[] = $coin;
                 break;
