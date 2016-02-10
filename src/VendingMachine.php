@@ -13,6 +13,9 @@ class VendingMachine
     const NICKEL = .05;
 
     /** @var float */
+    const PENNY = .01;
+
+    /** @var float */
     const QUARTER = .25;
 
     /** @var float[]  */
@@ -27,13 +30,17 @@ class VendingMachine
         return array_sum($this->_coinage);
     }
 
-    public function acceptCoin(float $coin)
+    public function acceptCoin(float $coin): array
     {
         switch ($coin) {
             case self::DIME:
             case self::NICKEL:
             case self::QUARTER:
                 $this->_coinage[] = $coin;
+                break;
+
+            case self::PENNY:
+                return $this->checkDisplay() + ['rejected' => sprintf('$%.2f', $coin)];
                 break;
 
             default:
