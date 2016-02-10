@@ -7,6 +7,9 @@ use InvalidArgumentException;
 class VendingMachine
 {
     /** @var float */
+    const CANDY = .65;
+
+    /** @var float */
     const CHIPS = .50;
 
     /** @var float */
@@ -93,7 +96,7 @@ class VendingMachine
     public function selectProduct(float $product): array
     {
         $cost      = $product;
-        $inventory = [self::CHIPS, self::COLA];
+        $inventory = [self::CANDY, self::CHIPS, self::COLA];
 
         if (!in_array($product, $inventory)) {
             throw new InvalidArgumentException('Invalid product selected.');
