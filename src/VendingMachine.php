@@ -12,6 +12,9 @@ class VendingMachine
     /** @var float */
     const NICKEL = .05;
 
+    /** @var float */
+    const QUARTER = .25;
+
     /** @var float[]  */
     protected $_coinage = [];
 
@@ -29,6 +32,7 @@ class VendingMachine
         switch ($coin) {
             case self::DIME:
             case self::NICKEL:
+            case self::QUARTER:
                 $this->_coinage[] = $coin;
                 break;
 

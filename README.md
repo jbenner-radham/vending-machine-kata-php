@@ -33,7 +33,7 @@ constants, enums, symbols, or something of that nature.
 
 - [x] Accept nickels.
 - [x] Accept dimes.
-- [ ] Accept quarters.
+- [x] Accept quarters.
 - [ ] Reject pennies.
 
 ### Select Product

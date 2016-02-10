@@ -22,4 +22,9 @@ class VendingMachineSpec extends ObjectBehavior
     {
         $this->acceptCoin(VendingMachine::DIME)->shouldReturn(['message' => '$0.10', 'balance' => '$0.10']);
     }
+
+    function it_should_accept_quarters()
+    {
+        $this->acceptCoin(VendingMachine::QUARTER)->shouldReturn(['message' => '$0.25', 'balance' => '$0.25']);
+    }
 }
