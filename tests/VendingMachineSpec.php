@@ -103,4 +103,15 @@ class VendingMachineSpec extends ObjectBehavior
         $this->returnCoins()
              ->shouldReturn(['message' => 'INSERT COIN', 'balance' => '$0.00', 'change' => '$0.10']);
     }
+
+    function it_should_notify_when_sold_out()
+    {
+        $this->acceptCoins([VendingMachine::QUARTER, VendingMachine::QUARTER]);
+        $this->selectProduct(VendingMachine::CHIPS)
+             ->shouldReturn(['message' => 'THANK YOU', 'balance' => '$0.00']);
+
+        $this->acceptCoins([VendingMachine::QUARTER, VendingMachine::QUARTER]);
+        $this->selectProduct(VendingMachine::CHIPS)
+             ->shouldReturn(['message' => 'SOLD OUT', 'balance' => '$0.50']);
+    }
 }

@@ -39,6 +39,9 @@ class VendingMachine
     /** @var float[]  */
     protected $_coinage = [];
 
+    /** @var float[] */
+    protected $_inventory = [self::CANDY, self::CHIPS, self::COLA];
+
     /** @var int */
     protected $_state = self::STATE_NO_OP;
 
@@ -171,6 +174,10 @@ class VendingMachine
             throw new InvalidArgumentException('Invalid product selected.');
         }
 
+        if (!in_array($product, $this->_inventory)) {
+            return $this->soldOut();
+        }
+
         if ($cost > $this->_getBalance()) {
             if ($this->_state === self::STATE_INSUFFICIENT_BALANCE) {
                 return $this->checkDisplay('INSERT COIN');
@@ -188,7 +195,11 @@ class VendingMachine
         }
 
         $this->_state = self::STATE_DISPENSE;
-        $display      = $this->checkDisplay('THANK YOU');
+        $item         = array_search($product, $this->_inventory);
+
+        unset($this->_inventory[$item]);
+
+        $display = $this->checkDisplay('THANK YOU');
 
         if ($display['balance'] !== '$0.00') {
             $display['change']  = $display['balance'];
@@ -196,5 +207,10 @@ class VendingMachine
         }
 
         return $display;
+    }
+
+    public function soldOut(): array
+    {
+        return $this->checkDisplay('SOLD OUT');
     }
 }

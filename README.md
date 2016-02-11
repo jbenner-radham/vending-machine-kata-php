@@ -91,6 +91,8 @@ When the item selected by the customer is out of stock, the machine displays
 money remaining in the machine or "INSERT COIN" if there is no money in the 
 machine.
 
+- [x] When a selected item is sold out display "SOLD OUT".
+
 ### Exact Change Only
 
 _As a customer_  
