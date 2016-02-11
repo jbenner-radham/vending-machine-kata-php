@@ -127,6 +127,15 @@ class VendingMachine
         return ['cost' => $coins, 'change' => $change];
     }
 
+    protected function _removeConsumedCoins(float $product)
+    {
+        foreach ($this->_makeChange($product)['cost'] as $consumedCoin) {
+            $index = array_search($consumedCoin, $this->_coinage);
+
+            unset($this->_coinage[$index]);
+        }
+    }
+
     protected function _soldOut(): array
     {
         return $this->checkDisplay('SOLD OUT');
@@ -197,11 +206,7 @@ class VendingMachine
             return $this->_insufficientBalance($price);
         }
 
-        foreach ($this->_makeChange($product)['cost'] as $consumedCoin) {
-            $index = array_search($consumedCoin, $this->_coinage);
-
-            unset($this->_coinage[$index]);
-        }
+        $this->_removeConsumedCoins($product);
 
         $this->_state = self::STATE_DISPENSE;
         $item         = array_search($product, $this->_inventory);
