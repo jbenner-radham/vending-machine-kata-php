@@ -96,4 +96,11 @@ class VendingMachineSpec extends ObjectBehavior
         $this->selectProduct(VendingMachine::COLA)
              ->shouldReturn(['message' => 'THANK YOU', 'balance' => '$0.00', 'change' => '$0.25']);
     }
+
+    function it_should_return_deposited_coins_when_the_change_return_is_pressed_and_display_insert_coin()
+    {
+        $this->acceptCoin(VendingMachine::DIME);
+        $this->returnCoins()
+             ->shouldReturn(['message' => 'INSERT COIN', 'balance' => '$0.00', 'change' => '$0.10']);
+    }
 }

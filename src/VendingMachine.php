@@ -148,6 +148,20 @@ class VendingMachine
         return ['cost' => $coins, 'change' => $change];
     }
 
+    public function returnCoins(): array
+    {
+        $this->_state = self::STATE_NO_OP;
+        $display      = $this->checkDisplay();
+
+        if ($display['balance'] !== '$0.00') {
+            $display['message'] = 'INSERT COIN';
+            $display['change']  = $display['balance'];
+            $display['balance'] = '$0.00';
+        }
+
+        return $display;
+    }
+
     public function selectProduct(float $product): array
     {
         $cost      = $product;

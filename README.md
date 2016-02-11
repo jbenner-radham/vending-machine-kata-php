@@ -78,6 +78,8 @@ _So that I can change my mind about buying stuff from the vending machine_
 When the return coins is selected, the money the customer has placed in the 
 machine is returned and the display shows "INSERT COIN".
 
+- [x] Return deposited coins when the change return is pressed and display "INSERT COIN".
+
 ### Sold Out
 
 _As a customer_  
