@@ -94,6 +94,15 @@ class VendingMachine
         return $this->checkDisplay();
     }
 
+    public function acceptCoins(array $coins): array
+    {
+        foreach ($coins as $coin) {
+            $this->acceptCoin($coin);
+        }
+
+        return $this->checkDisplay();
+    }
+
     public function checkDisplay(string $message = null): array
     {
         return ['message' => $message ?? $this->getMessage(), 'balance' => sprintf('$%.2f', $this->_getBalance())];
