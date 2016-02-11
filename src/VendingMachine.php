@@ -51,6 +51,29 @@ class VendingMachine
         return array_sum($this->_coinage);
     }
 
+    protected function _getSortedCoinage(): array
+    {
+        $coins = ['dimes' => [], 'nickels' => [], 'quarters' => []];
+
+        foreach ($this->_coinage as $coin) {
+            switch ($coin) {
+                case self::DIME:
+                    $coins['dimes'][] = $coin;
+                    break;
+
+                case self::NICKEL:
+                    $coins['nickels'][] = $coin;
+                    break;
+
+                case self::QUARTER:
+                    $coins['quarters'][] = $coin;
+                    break;
+            }
+        }
+
+        return $coins;
+    }
+
     public function acceptCoin(float $coin): array
     {
         switch ($coin) {
@@ -93,6 +116,29 @@ class VendingMachine
         return $message;
     }
 
+    public function makeChange(float $product): array
+    {
+        $change   = [];
+        $coins    = [];
+        $cost     = $product;
+        $dimes    = $this->_getSortedCoinage()['dimes'];
+        $nickels  = $this->_getSortedCoinage()['nickels'];
+        $quarters = $this->_getSortedCoinage()['quarters'];
+
+        foreach ([$quarters, $dimes, $nickels] as $sortedCoins) {
+            foreach ($sortedCoins as $index => $coin) {
+                if ($cost == 0) {
+                    $change[] = $coin;
+                } else {
+                    $cost    -= $coin;
+                    $coins[]  = $coin;
+                }
+            }
+        }
+
+        return ['cost' => $coins, 'change' => $change];
+    }
+
     public function selectProduct(float $product): array
     {
         $cost      = $product;
@@ -112,9 +158,20 @@ class VendingMachine
             return $this->checkDisplay($this->getMessage('PRICE ', $cost));
         }
 
-        $this->_coinage = [];
-        $this->_state   = self::STATE_DISPENSE;
+        foreach ($this->makeChange($product)['cost'] as $consumedCoin) {
+            $index = array_search($consumedCoin, $this->_coinage);
 
-        return $this->checkDisplay('THANK YOU');
+            unset($this->_coinage[$index]);
+        }
+
+        $this->_state = self::STATE_DISPENSE;
+        $display      = $this->checkDisplay('THANK YOU');
+
+        if ($display['balance'] !== '$0.00') {
+            $display['change']  = $display['balance'];
+            $display['balance'] = '$0.00';
+        }
+
+        return $display;
     }
 }
