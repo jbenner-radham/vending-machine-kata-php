@@ -94,6 +94,29 @@ class VendingMachine
         return $coins;
     }
 
+    protected function _makeChange(float $product): array
+    {
+        $change   = [];
+        $coins    = [];
+        $cost     = $product;
+        $dimes    = $this->_getSortedCoinage()['dimes'];
+        $nickels  = $this->_getSortedCoinage()['nickels'];
+        $quarters = $this->_getSortedCoinage()['quarters'];
+
+        foreach ([$quarters, $dimes, $nickels] as $sortedCoins) {
+            foreach ($sortedCoins as $index => $coin) {
+                if ($cost == 0) {
+                    $change[] = $coin;
+                } else {
+                    $cost    -= $coin;
+                    $coins[]  = $coin;
+                }
+            }
+        }
+
+        return ['cost' => $coins, 'change' => $change];
+    }
+
     public function acceptCoin(float $coin): array
     {
         switch ($coin) {
@@ -126,29 +149,6 @@ class VendingMachine
     public function checkDisplay(string $message = null): array
     {
         return ['message' => $message ?? $this->_getMessage(), 'balance' => sprintf('$%.2f', $this->_getBalance())];
-    }
-
-    public function makeChange(float $product): array
-    {
-        $change   = [];
-        $coins    = [];
-        $cost     = $product;
-        $dimes    = $this->_getSortedCoinage()['dimes'];
-        $nickels  = $this->_getSortedCoinage()['nickels'];
-        $quarters = $this->_getSortedCoinage()['quarters'];
-
-        foreach ([$quarters, $dimes, $nickels] as $sortedCoins) {
-            foreach ($sortedCoins as $index => $coin) {
-                if ($cost == 0) {
-                    $change[] = $coin;
-                } else {
-                    $cost    -= $coin;
-                    $coins[]  = $coin;
-                }
-            }
-        }
-
-        return ['cost' => $coins, 'change' => $change];
     }
 
     public function returnCoins(): array
@@ -188,7 +188,7 @@ class VendingMachine
             return $this->checkDisplay($this->_getMessage('PRICE ', $cost));
         }
 
-        foreach ($this->makeChange($product)['cost'] as $consumedCoin) {
+        foreach ($this->_makeChange($product)['cost'] as $consumedCoin) {
             $index = array_search($consumedCoin, $this->_coinage);
 
             unset($this->_coinage[$index]);
