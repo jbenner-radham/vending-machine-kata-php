@@ -54,6 +54,23 @@ class VendingMachine
         return array_sum($this->_coinage);
     }
 
+    protected function _getMessage(string $message = null, float $money = null): string
+    {
+        if (!$message && !$money) {
+            if ($this->_getBalance() == 0) {
+                return 'INSERT COIN';
+            }
+
+            return sprintf('$%.2f', $this->_getBalance());
+        }
+
+        if ($money) {
+            $message .= sprintf('$%.2f', $money);
+        }
+
+        return $message;
+    }
+
     protected function _getSortedCoinage(): array
     {
         $coins = ['dimes' => [], 'nickels' => [], 'quarters' => []];
@@ -108,24 +125,7 @@ class VendingMachine
 
     public function checkDisplay(string $message = null): array
     {
-        return ['message' => $message ?? $this->getMessage(), 'balance' => sprintf('$%.2f', $this->_getBalance())];
-    }
-
-    public function getMessage(string $message = null, float $money = null): string
-    {
-        if (!$message && !$money) {
-            if ($this->_getBalance() == 0) {
-                return 'INSERT COIN';
-            }
-
-            return sprintf('$%.2f', $this->_getBalance());
-        }
-
-        if ($money) {
-            $message .= sprintf('$%.2f', $money);
-        }
-
-        return $message;
+        return ['message' => $message ?? $this->_getMessage(), 'balance' => sprintf('$%.2f', $this->_getBalance())];
     }
 
     public function makeChange(float $product): array
@@ -185,7 +185,7 @@ class VendingMachine
 
             $this->_state = self::STATE_INSUFFICIENT_BALANCE;
 
-            return $this->checkDisplay($this->getMessage('PRICE ', $cost));
+            return $this->checkDisplay($this->_getMessage('PRICE ', $cost));
         }
 
         foreach ($this->makeChange($product)['cost'] as $consumedCoin) {
