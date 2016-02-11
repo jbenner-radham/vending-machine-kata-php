@@ -37,6 +37,9 @@ class VendingMachine
     const STATE_INSUFFICIENT_BALANCE = 2;
 
     /** @var float[]  */
+    protected $_bank = [VendingMachine::DIME, VendingMachine::NICKEL, VendingMachine::QUARTER];
+
+    /** @var float[]  */
     protected $_coinage = [];
 
     /** @var float[] */
@@ -167,7 +170,7 @@ class VendingMachine
 
     public function selectProduct(float $product): array
     {
-        $cost      = $product;
+        $price      = $product;
         $inventory = [self::CANDY, self::CHIPS, self::COLA];
 
         if (!in_array($product, $inventory)) {
@@ -178,14 +181,10 @@ class VendingMachine
             return $this->soldOut();
         }
 
-        if ($cost > $this->_getBalance()) {
-            if ($this->_state === self::STATE_INSUFFICIENT_BALANCE) {
-                return $this->checkDisplay('INSERT COIN');
-            }
-
+        if ($price > $this->_getBalance()) {
             $this->_state = self::STATE_INSUFFICIENT_BALANCE;
 
-            return $this->checkDisplay($this->_getMessage('PRICE ', $cost));
+            return $this->checkDisplay($this->_getMessage('PRICE ', $price));
         }
 
         foreach ($this->_makeChange($product)['cost'] as $consumedCoin) {
