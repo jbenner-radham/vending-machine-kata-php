@@ -97,6 +97,13 @@ class VendingMachine
         return $coins;
     }
 
+    protected function _insufficientBalance(float $price): array
+    {
+        $this->_state = self::STATE_INSUFFICIENT_BALANCE;
+
+        return $this->checkDisplay($this->_getMessage('PRICE ', $price));
+    }
+
     protected function _makeChange(float $product): array
     {
         $change   = [];
@@ -120,11 +127,9 @@ class VendingMachine
         return ['cost' => $coins, 'change' => $change];
     }
 
-    protected function _insufficientBalance(float $price): array
+    protected function _soldOut(): array
     {
-        $this->_state = self::STATE_INSUFFICIENT_BALANCE;
-
-        return $this->checkDisplay($this->_getMessage('PRICE ', $price));
+        return $this->checkDisplay('SOLD OUT');
     }
 
     public function acceptCoin(float $coin): array
@@ -185,7 +190,7 @@ class VendingMachine
         }
 
         if (!in_array($product, $this->_inventory)) {
-            return $this->soldOut();
+            return $this->_soldOut();
         }
 
         if ($price > $this->_getBalance()) {
@@ -211,10 +216,5 @@ class VendingMachine
         }
 
         return $display;
-    }
-
-    public function soldOut(): array
-    {
-        return $this->checkDisplay('SOLD OUT');
     }
 }
