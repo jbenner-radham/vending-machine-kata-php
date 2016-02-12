@@ -69,6 +69,8 @@ from the project directory root in the terminal:
   ```sh
   php composer.phar install
   ```
+
+_Tested against PHP 7.0.3 and Composer 1.0-dev._ 
   
 How to Test
 -----------
