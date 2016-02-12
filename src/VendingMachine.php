@@ -38,11 +38,11 @@ class VendingMachine
     /** @var int */
     const STATE_INSUFFICIENT_BALANCE = 2;
 
-    /** @var float[]  */
-    protected $_bank = [VendingMachine::DIME, VendingMachine::NICKEL, VendingMachine::QUARTER];
+    /** @var float */
+    protected $_balance = 0;
 
     /** @var float[]  */
-    protected $_coinage = [];
+    protected $_bank = [VendingMachine::DIME, VendingMachine::NICKEL, VendingMachine::QUARTER];
 
     /** @var float[] */
     protected $_inventory = [self::CANDY, self::CHIPS, self::COLA];
@@ -52,20 +52,18 @@ class VendingMachine
 
     public function acceptCoin(float $coin): array
     {
-        switch ($coin) {
-            case self::DIME:
-            case self::NICKEL:
-            case self::QUARTER:
-                $this->_coinage[] = $coin;
-                break;
-
-            case self::PENNY:
-                return $this->checkDisplay() + ['rejected' => sprintf('$%.2f', $coin)];
-                break;
-
-            default:
-                throw new InvalidArgumentException('Invalid coin type received.');
+        if ($coin == VendingMachine::PENNY) {
+            return $this->checkDisplay() + ['rejected' => sprintf('$%.2f', $coin)];
         }
+
+        $acceptedCoins = [self::DIME, self::NICKEL, self::QUARTER];
+
+        if (!in_array($coin, $acceptedCoins)) {
+            throw new InvalidArgumentException('Invalid coin type received.');
+        }
+
+        $this->_balance += $coin;
+        $this->_bank[]   = $coin;
 
         return $this->checkDisplay();
     }
@@ -81,10 +79,21 @@ class VendingMachine
 
     public function checkDisplay(string $message = null): array
     {
+        if (empty($this->_bank)) {
+            $message = 'EXACT CHANGE ONLY';
+        }
+
         return [
             'message' => $message ?? $this->_getMessage(),
-            'balance' => sprintf('$%.2f', $this->_getBalance())
+            'balance' => sprintf('$%.2f', $this->_balance)
         ];
+    }
+
+    public function emptyBank(): self
+    {
+        $this->_bank = [];
+
+        return $this;
     }
 
     public function returnCoins(): array
@@ -113,9 +122,13 @@ class VendingMachine
             return $this->_soldOut();
         }
 
-        if ($price > $this->_getBalance()) {
+        if ($price > $this->_balance) {
             return $this->_insufficientBalance($price);
         }
+
+        #if (!empty($this->_makeChange($product))) {
+        #    dump($this->_makeChange($product));
+        #}
 
         return $this->_vendProduct($product);
     }

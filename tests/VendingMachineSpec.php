@@ -114,4 +114,11 @@ class VendingMachineSpec extends ObjectBehavior
         $this->selectProduct(VendingMachine::CHIPS)
              ->shouldReturn(['message' => 'SOLD OUT', 'balance' => '$0.50']);
     }
+
+    function it_should_display_exact_change_only_when_unable_to_make_change_for_items()
+    {
+        $this->emptyBank()
+             ->checkDisplay()
+             ->shouldReturn(['message' => 'EXACT CHANGE ONLY', 'balance' => '$0.00']);
+    }
 }

@@ -7,11 +7,11 @@ trait OperationalTrait
     protected function _getMessage(string $message = null, float $money = null): string
     {
         if (!$message && !$money) {
-            if ($this->_getBalance() == 0) {
+            if ($this->_balance == 0) {
                 return 'INSERT COIN';
             }
 
-            return sprintf('$%.2f', $this->_getBalance());
+            return sprintf('$%.2f', $this->_balance);
         }
 
         if ($money) {
@@ -39,13 +39,16 @@ trait OperationalTrait
         $this->_removeConsumedCoins($product);
         $this->_removeItemFromInventory($product);
 
+        if ($this->_balance == 0.0) {
+            return $this->checkDisplay('THANK YOU');
+        }
+
+        $balance = $this->_makeChange($product)['balance'];
+        $change  = $this->_makeChange($product)['change'];
         $display = $this->checkDisplay('THANK YOU');
 
-        if ($display['balance'] !== '$0.00') {
-            dump($display);
-            $display['change']  = $display['balance'];
-            $display['balance'] = '$0.00';
-        }
+        $display['change']  = $display['balance'];
+        $display['balance'] = '$0.00';
 
         return $display;
     }
