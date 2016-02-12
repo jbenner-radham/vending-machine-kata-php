@@ -10,6 +10,75 @@ The point of this kata to to provide a larger than trivial exercise that can be
 used to practice TDD. A significant portion of the effort will be in 
 determining what tests should be written and, more importantly, written next.
 
+How to Install
+--------------
+
+The recommended way to run this exercise is via [Vagrant](https://www.vagrantup.com/)
+but it can be installed locally if your workstation is running PHP 7.
+
+### Vagrant Install
+
+Download [VirtualBox](https://www.virtualbox.org/) and 
+[Vagrant](https://www.vagrantup.com/) if you do not already have them. If you 
+have [Homebrew](http://brew.sh/) w/[Cask](http://caskroom.io/) on OS X you can 
+install it from the terminal via:
+
+```sh
+brew cask install virtualbox vagrant
+```
+
+Then run the following from the project directory root:
+
+```sh
+vagrant up
+vagrant ssh
+cd /vagrant
+```
+
+Once you are done with the Vagrant box to exit the SSH session enter:
+
+```sh
+exit
+```
+
+Then to shutdown the VM type:
+
+```sh
+vagrant halt
+```
+
+And lastly, when you are ready to delete the Vagrant box VM:
+
+```sh
+vagrant destroy
+```
+
+### Standard Install
+
+Get [Composer](https://getcomposer.org/) if you do not have it already. Then 
+from the project directory root in the terminal:
+
+- If you have a system wide install of Composer...
+
+  ```sh
+  composer install
+  ```
+
+- If you have a PHAR download of Composer...
+
+  ```sh
+  php composer.phar install
+  ```
+  
+How to Test
+-----------
+
+From inside the project root in your terminal:
+
+```sh
+bin/phpspec run
+```
+
 Features
 --------
 
@@ -64,8 +133,8 @@ _As a vendor_
 _I want customers to receive correct change_  
 _So that they will use the vending machine again_  
 
-When a product is selected that costs less than the amount of money in the machine, then the remaining amount is placed
-in the coin return.
+When a product is selected that costs less than the amount of money in the 
+machine, then the remaining amount is placed in the coin return.
 
 - [x] Return change after a purchase.
 
