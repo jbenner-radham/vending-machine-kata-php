@@ -175,3 +175,7 @@ any of the items that it sells, it will display "EXACT CHANGE ONLY" instead of
 "INSERT COIN".
 
 - [x] When unable to make change for any of the items it sells the display should read "EXACT CHANGE ONLY".
+
+License
+-------
+This project is licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT). You can view the full license [here](LICENSE).
