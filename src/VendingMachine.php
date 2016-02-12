@@ -126,10 +126,6 @@ class VendingMachine
             return $this->_insufficientBalance($price);
         }
 
-        #if (!empty($this->_makeChange($product))) {
-        #    dump($this->_makeChange($product));
-        #}
-
         return $this->_vendProduct($product);
     }
 }
